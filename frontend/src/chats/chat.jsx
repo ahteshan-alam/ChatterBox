@@ -6,7 +6,7 @@ import { useState } from "react";
 import Message from "../message/message";
 import ScrollToBottom from "react-scroll-to-bottom";
 
-const ENDPOINT = import.meta.env.VITE_BACKEND_URL;
+const ENDPOINT = process.env.REACT_APP_BACKEND_URL;
 
 
 function Chat() {
@@ -80,13 +80,13 @@ function Chat() {
       </div>
 
       <ScrollToBottom className="messages">
-      {timeline.map((item, index) => {
-        if (item.type === "notification") {
-          return <h2 key={index} className="notification">{item.text}</h2>;
-        } else {
-          return <Message key={item.time} data={item} user={user} />;
-        }
-      })}
+        {timeline.map((item, index) => {
+  if (item.type === "notification") {
+    return <h2 key={index} className="notification">{item.text}</h2>;
+  } else {
+    return <Message key={item.time} data={item} user={user} />;
+  }
+})}
 
       </ScrollToBottom>
 
