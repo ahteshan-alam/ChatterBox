@@ -6,7 +6,8 @@ import { useState } from "react";
 import Message from "../message/message";
 import ScrollToBottom from "react-scroll-to-bottom";
 
-const ENDPOINT = 'http://localhost:5000/';
+const ENDPOINT = import.meta.env.VITE_BACKEND_URL;
+
 
 function Chat() {
   const socket = useRef(null);
