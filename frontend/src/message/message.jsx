@@ -1,4 +1,4 @@
-import './Message.css';
+import './message.css';
 
 function Message({ data, user }) {
     const isOwn = data.id === user;
