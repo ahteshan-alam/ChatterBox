@@ -2,7 +2,7 @@ import './join.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-function Join({ socket }) {
+function Join() {
     const navigate=useNavigate()
     const [username,setUsername]=useState("")
     const handleSubmit=(e)=>{

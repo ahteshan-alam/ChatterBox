@@ -6,15 +6,15 @@ import { useState } from "react";
 import Message from "../message/message";
 import ScrollToBottom from "react-scroll-to-bottom";
 
-const ENDPOINT = process.env.REACT_APP_BACKEND_URL;
+const ENDPOINT = import.meta.env.VITE_BACKEND_URL;
+
 
 
 function Chat() {
   const socket = useRef(null);
   const location = useLocation();
   const username = location.state?.username;
-  const [notification, setNotification] = useState([]);
-  const [messages, setMessages] = useState([]);
+
   const [message, setMessage] = useState("");
   const [user, setUser] = useState("");
   const [timeline, setTimeline] = useState([]);
