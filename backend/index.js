@@ -45,7 +45,7 @@ io.on("connection", (socket) => {
   socket.on("message", ({ username, message }) => {
     const id = uuidv4();
     let time = Date.now();
-    io.emit("sendMessage", { username, message, id, type: "message" });
+    io.emit("sendMessage", { username, message, id, type: "message",time });
 });
 
   socket.on("disconnect", () => {
