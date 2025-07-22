@@ -1,15 +1,18 @@
 import { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import "./chat.css";
 import Message from "../message/message";
 import ScrollToBottom from "react-scroll-to-bottom";
 import io from "socket.io-client";
+
 
 function Chat() {
   const location = useLocation();
   const username = location.state?.username;
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [showOnlineUsers, setShowOnlineUsers] = useState(false);
   const socket = useRef(null);
 
   const handleChange = (e) => {
@@ -22,11 +25,21 @@ function Chat() {
     setMessage("");
   };
 
+  const toggleOnlineUsers = () => {
+    setShowOnlineUsers(!showOnlineUsers);
+  };
+
   useEffect(() => {
     socket.current = io(import.meta.env.VITE_BACKEND_URL);
 
+
     socket.current.on("connect", () => {
       socket.current.emit("joined", { username });
+    });
+
+    socket.current.on("list", ({ clients }) => {
+      setOnlineUsers(clients);
+      clients.map((client) => console.log("online : ", client.username));
     });
 
     socket.current.on("userJoined", ({ name, message, id, type }) => {
@@ -55,6 +68,31 @@ function Chat() {
     <div className="chatbox">
       <div className="header">
         <h1>ChatterBox</h1>
+        <div className="online-section">
+          <button 
+            className="online-count-btn" 
+            onClick={toggleOnlineUsers}
+          >
+            <span className="online-indicator">●</span>
+            <span>{onlineUsers.length} online</span>
+          </button>
+          
+          {showOnlineUsers && (
+            <div className="online-dropdown">
+              <div className="dropdown-header">
+                Online Users ({onlineUsers.length})
+              </div>
+              <div className="online-users-list">
+                {onlineUsers.map((client) => (
+                  <div key={client.id} className="online-user-item">
+                    <span className="user-online-indicator">●</span>
+                    <span className="username">{client.username}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <ScrollToBottom className="messages">

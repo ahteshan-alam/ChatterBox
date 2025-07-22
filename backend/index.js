@@ -17,7 +17,7 @@ const io = new Server(server, {
 
 
 let users = {};
-
+let clients=[]
 app.use(cors());
 
 app.get("/", (req, res) => {
@@ -27,6 +27,9 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
     socket.on("joined", ({ username }) => {
         users[socket.id] = username;
+        clients.push({id:socket.id,username:username})
+        console.log(clients)
+        io.emit("list",{clients})
           socket.broadcast.emit("userJoined", {
             name: "Admin",
             message: `${username} has joined the chat`,
@@ -39,6 +42,7 @@ io.on("connection", (socket) => {
             type: "notification",
             id: uuidv4()
         });
+        
     });
   
 
@@ -50,16 +54,19 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     const username = users[socket.id];
-    
+    clients=clients.filter((client)=> client.id!==socket.id)
     if (username) {
         socket.broadcast.emit("leave", {
             name: "admin",
             message: `${username} has left the chat`,
             type: "notification",
-            id: uuidv4()
+            id: uuidv4(),
+            
         });
     }
     delete users[socket.id];
+   io.emit("list",{clients})
+    console.log(clients)
 });
 });
 
