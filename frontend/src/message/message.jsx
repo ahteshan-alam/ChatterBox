@@ -1,10 +1,10 @@
 import './message.css';
 
 function Message({ data, user }) {
-    const isOwn = data.id === user;
-    const messageTime = new Date(data.time).toLocaleTimeString([], { 
-        hour: '2-digit', 
-        minute: '2-digit' 
+    const isOwn = data.username === user;
+    const messageTime = new Date(data.time).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit'
     });
 
     return (
