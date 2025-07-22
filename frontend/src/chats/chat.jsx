@@ -39,7 +39,7 @@ function Chat() {
 
     socket.current.on("list", ({ clients }) => {
       setOnlineUsers(clients);
-      clients.map((client) => console.log("online : ", client.username));
+      
     });
 
     socket.current.on("userJoined", ({ name, message, id, type }) => {
