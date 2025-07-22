@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
     }
     delete users[socket.id];
    io.emit("list",{clients})
-    console.log(clients)
+    
 });
 });
 
