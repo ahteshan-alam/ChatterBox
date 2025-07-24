@@ -5,11 +5,12 @@ import { useState } from 'react';
 function Join() {
     const navigate=useNavigate()
     const [username,setUsername]=useState("")
+    const [room,setRoom]=useState("")
     const handleSubmit=(e)=>{
         e.preventDefault();
         
             
-        navigate('/chat',{state:{username}});
+        navigate('/chat',{state:{username,room}});
     }
     const handleChange=(e)=>{
         
@@ -17,6 +18,10 @@ function Join() {
      
       
        
+    }
+    const handleChangeroom=(e)=>{
+        setRoom(e.target.value)
+        console.log(room,username)
     }
     return ( 
     <>
@@ -36,8 +41,18 @@ function Join() {
                                 onChange={handleChange} 
                                 required
                             />
+                             <label htmlFor="room" className='mt-2'>room id: </label>
+                            <input 
+                                type="text" 
+                                name="room" 
+                                id="room" 
+                                value={room} 
+                                onChange={handleChangeroom} 
+                                required
+                            />
                         </div>
-                        <button type="submit">enter</button>
+                        
+                        <button type="submit">Enter</button>
                     </form>
                     <div className="join-status">
                         <div className="status-dot"></div>

@@ -1,7 +1,7 @@
 import './message.css';
 
-function Message({ data, user }) {
-    const isOwn = data.username === user;
+function Message({ data, currUserId }) {
+    const isOwn = data.userId === currUserId;
     const messageTime = new Date(data.time).toLocaleTimeString([], {
         hour: '2-digit',
         minute: '2-digit'
