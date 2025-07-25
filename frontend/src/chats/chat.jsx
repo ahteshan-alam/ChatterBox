@@ -57,7 +57,7 @@ function Chat() {
   };
 
   useEffect(() => {
-    socket.current = io(import.meta.env.VITE_BACKEND_URL);
+    socket.current = io("https://chatterboxx-rz5g.onrender.com/");
 
     socket.current.on("connect", () => {
       setCurrUserId(socket.current.id);
