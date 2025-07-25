@@ -1,0 +1,17 @@
+# Ignore all .env files inside any folder
+**/.env
+
+# Ignore all node_modules folders
+**/node_modules
+
+# Ignore frontend and backend build files
+frontend/dist
+backend/dist
+
+# Ignore logs
+**/*.log
+
+# Ignore editor files
+.DS_Store
+.vscode/
+.idea/
