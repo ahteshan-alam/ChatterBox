@@ -110,7 +110,7 @@ function Chat() {
     };
   }, [username, room]);
 
-  // === Loading Screen ===
+
   if (isLoading) {
     return (
       <div className="chatbox">
@@ -126,7 +126,7 @@ function Chat() {
     );
   }
 
-  // === Main Chat UI ===
+
   return (
     <div className="chatbox">
       <div className="header">
