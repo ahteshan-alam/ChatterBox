@@ -17,6 +17,7 @@ function Chat() {
   const [currUserId, setCurrUserId] = useState("");
   const [typeMsg, setTypeMsg] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const socket = useRef(null);
   const typingTimeout = useRef(null);
@@ -57,11 +58,13 @@ function Chat() {
   };
 
   useEffect(() => {
-    socket.current = io("https://chatterboxx-rz5g.onrender.com");
-   
+    socket.current = io("https://chatterboxx-rz5g.onrender.com/");
+
     socket.current.on("connect", () => {
       setCurrUserId(socket.current.id);
       socket.current.emit("join-room", { username, room });
+
+    
     });
 
     socket.current.on("user-joined", ({ type, message, id, clients }) => {
@@ -72,6 +75,8 @@ function Chat() {
     socket.current.on("welcome", ({ message, type, id, clients }) => {
       setOnlineUsers(clients);
       setMessages((prev) => [...prev, { message, type, id }]);
+      setIsLoading(false);
+
     });
 
     socket.current.on("send-message", ({ message, username, type, id, time, userId }) => {
@@ -102,6 +107,23 @@ function Chat() {
     };
   }, [username, room]);
 
+  // === Loading Screen ===
+  if (isLoading) {
+    return (
+      <div className="chatbox">
+        <div className="header">
+          <h1>ChatterBox</h1>
+        </div>
+
+        <div className="loading-area">
+          <h2 className="loading-text">Connecting to ChatterBox...</h2>
+          <div className="loader"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // === Main Chat UI ===
   return (
     <div className="chatbox">
       <div className="header">
@@ -130,7 +152,6 @@ function Chat() {
         </div>
       </div>
 
-      
       <div className="messages-container">
         <ScrollToBottom className="messages">
           {messages.map((item) =>
@@ -143,8 +164,7 @@ function Chat() {
             )
           )}
         </ScrollToBottom>
-        
-       
+
         {typeMsg && (
           <div className="typing-indicator">
             {typeMsg}
