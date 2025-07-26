@@ -74,8 +74,10 @@ function Chat() {
 
     socket.current.on("welcome", ({ message, type, id, clients }) => {
       setOnlineUsers(clients);
-      setIsLoading(false);
+      
       setMessages((prev) => [...prev, { message, type, id }]);
+
+      setIsLoading(false);
       
 
     });
