@@ -58,13 +58,7 @@ function Chat() {
 
   useEffect(() => {
     socket.current = io("https://chatterboxx-rz5g.onrender.com");
-    socket.current.on("connect_error", (err) => {
-      console.error("Socket.IO connect_error:", err);
-    });
-    
-    socket.current.on("connect_failed", () => {
-      console.error("Socket.IO connect_failed");
-    });
+   
     socket.current.on("connect", () => {
       setCurrUserId(socket.current.id);
       socket.current.emit("join-room", { username, room });
