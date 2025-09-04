@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './home.css';
+import './chat.css';
 import { io } from 'socket.io-client';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import Message from '../message/message';
