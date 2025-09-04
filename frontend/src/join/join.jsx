@@ -12,7 +12,7 @@ function Join() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate("/home", { state: { formData } });
+        navigate("/chat", { state: { formData } });
         console.log("submit request", formData);
     };
 
