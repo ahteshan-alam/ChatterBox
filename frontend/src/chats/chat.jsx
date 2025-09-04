@@ -359,7 +359,8 @@ function Home() {
       localVideo.current.srcObject = null;
     }
     candidatesQueue.current = [];
-
+    setMute(true)
+    setPause(true)
     setInCall(false);
     setIncomingcall(false);
     setIsCalling(false);
