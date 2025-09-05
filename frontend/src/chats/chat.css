@@ -2472,8 +2472,8 @@ body::before {
 
 .video-label {
     position: absolute;
-    bottom: 12px;
-    right: 12px;
+    top: 12px;
+    left: 12px;
     background-color: rgba(0, 0, 0, 0.6);
     color: var(--text-primary);
     padding: 5px 12px;
