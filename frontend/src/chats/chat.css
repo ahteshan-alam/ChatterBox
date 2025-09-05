@@ -2704,8 +2704,8 @@ body::before {
 
     .local-video-view {
         /* Increased from the old 120px to 150px as requested */
-        width: 150px;
-        bottom: 85px;
+        width: 180px;
+        bottom: 100px;
         /* Adjust position for smaller controls */
         right: 1rem;
     }
