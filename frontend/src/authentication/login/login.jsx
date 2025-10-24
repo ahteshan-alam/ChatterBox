@@ -12,7 +12,7 @@ function LogIn() {
     const handleSubmit=async(e)=>{
         e.preventDefault()
         try{
-            const res=await axios.post("http://localhost:2000/logIn",{
+            const res=await axios.post("https://chatterbox-o3zv.onrender.com/logIn",{
                 username:e.target.username.value,
                 password:e.target.password.value
             })

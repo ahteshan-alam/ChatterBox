@@ -74,7 +74,7 @@ function Home() {
     }, 1000);
   };
   const saveMessage=async()=>{
-    const res=await axios.post("http://localhost:2000/message",{sender:username,message,roomId:room})
+    const res=await axios.post("https://chatterbox-o3zv.onrender.com/message",{sender:username,message,roomId:room})
     console.log(res.data.message)
   }
   const handleSubmit =async (e) => {

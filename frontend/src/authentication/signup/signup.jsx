@@ -11,7 +11,7 @@ function SignUp() {
     const handleSubmit=async(e)=>{
         e.preventDefault()
         try{
-            const res=await axios.post("http://localhost:2000/signUp",{
+            const res=await axios.post("https://chatterbox-o3zv.onrender.com/signUp",{
                 username:e.target.username.value,
                 email:e.target.email.value,
                 password:e.target.password.value
