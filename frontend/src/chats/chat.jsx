@@ -102,7 +102,7 @@ function Home() {
       return;
     }
 
-    socket.current = io('http://localhost:2000');
+    socket.current = io('https://chatterbox-o3zv.onrender.com');
     socket.current.on('connect', () => {
       setCurrUserId(socket.current.id);
       setCurrentUser({ username: formData.username, id: socket.current.id });
