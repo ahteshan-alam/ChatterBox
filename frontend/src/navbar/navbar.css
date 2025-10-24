@@ -1,0 +1,231 @@
+/* Navbar.css */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--bg-primary);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--border-primary);
+    padding: 1rem 2rem;
+}
+
+.navbar::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--secondary-gradient);
+    opacity: 0.3;
+}
+
+.navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 2rem;
+}
+
+/* Left side - Logo and App Name */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-right: 850px;
+}
+
+.app-logo {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-gradient);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #000000;
+    box-shadow: 0 4px 15px rgba(0, 255, 157, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.app-logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 255, 157, 0.4);
+}
+
+.app-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--secondary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+/* Right side - Navigation Buttons */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-btn {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--border-primary);
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    backdrop-filter: blur(10px);
+    white-space: nowrap;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+}
+
+.nav-btn:active {
+    transform: translateY(0);
+}
+
+.home-btn {
+    border-color: rgba(0, 128, 255, 0.3);
+}
+
+.home-btn:hover {
+    border-color: var(--accent-blue);
+    box-shadow: 0 4px 15px rgba(0, 128, 255, 0.2);
+}
+
+.user-btn {
+    border-color: rgba(0, 255, 157, 0.3);
+    padding: 0.75rem 1.25rem;
+}
+
+.user-btn:hover {
+    border-color: var(--accent-green);
+    box-shadow: 0 4px 15px rgba(0, 255, 157, 0.2);
+}
+
+.user-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #000000;
+}
+
+.logout-btn {
+    background: linear-gradient(135deg, rgba(255, 0, 128, 0.1) 0%, rgba(255, 0, 128, 0.05) 100%);
+    border-color: rgba(255, 0, 128, 0.3);
+}
+
+.logout-btn:hover {
+    background: linear-gradient(135deg, rgba(255, 0, 128, 0.2) 0%, rgba(255, 0, 128, 0.1) 100%);
+    border-color: var(--accent-pink);
+    box-shadow: 0 4px 15px rgba(255, 0, 128, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem 1.5rem;
+    }
+
+    .navbar-container {
+        gap: 1rem;
+    }
+
+    .app-name {
+        font-size: 1.25rem;
+    }
+
+    .navbar-right {
+        gap: 0.75rem;
+    }
+
+    .nav-btn {
+        padding: 0.65rem 1.25rem;
+        font-size: 0.9rem;
+    }
+
+    .user-btn {
+        padding: 0.65rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0.75rem 1rem;
+    }
+
+    .navbar-container {
+        gap: 0.75rem;
+    }
+
+    .app-logo {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+    }
+
+    .app-name {
+        font-size: 1.1rem;
+    }
+
+    .navbar-right {
+        gap: 0.5rem;
+    }
+
+    .nav-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .user-btn {
+        padding: 0.6rem 0.85rem;
+    }
+
+    .user-icon {
+        width: 22px;
+        height: 22px;
+        font-size: 0.8rem;
+    }
+
+    /* Hide text on very small screens, show only icons */
+    .home-btn span,
+    .logout-btn span {
+        display: none;
+    }
+
+    .home-btn::before {
+        content: '🏠';
+    }
+
+    .logout-btn::before {
+        content: '🚪';
+    }
+}

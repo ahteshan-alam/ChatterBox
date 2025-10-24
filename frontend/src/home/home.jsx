@@ -1,16 +1,25 @@
+
+import Navbar from "../navbar/navbar";
 import "./home.css"
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
+
 function Home() {
     const navigate=useNavigate()
+    const location=useLocation()
+    const user= location.state?.user || JSON.parse(localStorage.getItem("user"));
     const handleCreateRoom = () => {
-        navigate('/join');
+        navigate('/join',{state:{username:user.username}});
       };
     
       const handleJoinRoom = () => {
-        navigate('/join');
+        navigate('/join',{state:{username:user.username}});
       };
+      
     return ( 
+ <div>
+    <Navbar name={user.username || "guest"}/>
         <div class="landing">
+            
         <div class="landing-container">
            
             <div class="landing-header">
@@ -44,8 +53,9 @@ function Home() {
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon"></div>
-                        <span class="feature-text">No registration required</span>
+                        <span class="feature-text">Real-time audio/video call</span>
                     </div>
+                   
                     <div class="feature-item">
                         <div class="feature-icon"></div>
                         <span class="feature-text">Secure & private</span>
@@ -54,6 +64,7 @@ function Home() {
                         <div class="feature-icon"></div>
                         <span class="feature-text">Mobile friendly</span>
                     </div>
+                    
                 </div>
             </div>
 
@@ -64,6 +75,8 @@ function Home() {
             </div>
         </div>
     </div>
+    </div>
+   
      );
 }
 

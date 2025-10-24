@@ -1,16 +1,27 @@
-
+import { verifyToken } from './middleware/auth.js'
 import express from 'express'
 import cors from 'cors'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import { v4 as uuidv4 } from 'uuid';
+import mongoose from 'mongoose';
+import User from './schemas/userSchema.js';
+import Message from './schemas/messageSchema.js'
+import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
+
+
 const app = express()
+const url = 'mongodb+srv://ahteshan_04:ahteshan0904@cluster0.poux9.mongodb.net/chatterbox?retryWrites=true&w=majority&appName=Cluster0'
+app.use(express.json());
 app.use(cors())
 const server = createServer(app)
 
 const io = new Server(server, {
   cors: {
-    origin: "https://chatterbocs.netlify.app",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"]
   }
 })
@@ -159,13 +170,68 @@ io.on("connection", (socket) => {
 
 
 })
+app.post("/signUp",async(req,res)=>{
+  const {username,email,password}=req.body
+  const existingUser1=await User.findOne({username})
+  if(existingUser1){
+    return res.status(400).json({message:"username already exist"})
+  }
+  const existingUser2=await User.findOne({email})
+  if(existingUser2){
+    return res.status(400).json({message:"email already exist"})
+  }
 
+  const hashedPassword=await bcrypt.hash(password,10)
 
-app.get("/", (req, res) => {
-  res.send("welcome to the backend")
+  const newUser=new User({username,email,password:hashedPassword})
+  await newUser.save()
+  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET , { expiresIn: "7d" });
+  res.status(201).json({message:"user registered successfully",token,newUser})
+  
+})
+app.post("/logIn",async(req,res)=>{
+  const {username,password}=req.body
+  const user=await User.findOne({username})
+  if(!user){
+    return res.status(400).json({message:"user not found"})
+  }
+  const isMatched=await bcrypt.compare(password,user.password)
+  if(!isMatched){
+   return res.status(400).json({message:"invalid password"})
+  }
+  console.log(user)
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET , { expiresIn: "7d" });
+  res.status(201).json({message:`logging in as ${user.username}`,token,user})
+  
+  
+
+ 
+  
+})
+app.post("/message",async(req,res)=>{
+  const {sender,message,roomId,time=new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}=req.body;
+  const newMessage=new Message({sender,message,roomId,time})
+  await newMessage.save()
+  return res.status(200).json({message:"message saved successfully"})
 })
 
+app.get("/verify",verifyToken,(req,res)=>{
+  res.status(200).json({ message: "Token is valid", userId: req.user.id });
+})
+const startServer = async () => {
+  try {
+    await mongoose.connect(url);
+    console.log(' Connected to database');
 
-server.listen(2000, () => {
-  console.log("server online at 2000")
+    server.listen(2000, () => {
+      console.log(' Server online at port 2000');
+    });
+  } catch (err) {
+    console.error(' Error occurred while connecting to database:', err);
+  }
+};
+
+startServer();
+app.get('/',(req,res)=>{
+  res.send("welcome to backend of chatterbocs")
 })

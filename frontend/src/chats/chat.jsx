@@ -4,7 +4,7 @@ import './chat.css';
 import { io } from 'socket.io-client';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import Message from '../message/message';
-
+import axios from 'axios';
 const configuration = {
   iceServers: [
     {
@@ -24,6 +24,7 @@ const configuration = {
 function Home() {
   const location = useLocation();
   const formData = location.state?.formData;
+  const user=JSON.parse(localStorage.getItem("user"));
   const username = formData?.username;
   const room = formData?.room;
   const [otherusers, setOtherusers] = useState([]);
@@ -72,8 +73,11 @@ function Home() {
       socket.current.emit('typing', { username: '', room });
     }, 1000);
   };
-
-  const handleSubmit = (e) => {
+  const saveMessage=async()=>{
+    const res=await axios.post("http://localhost:2000/message",{sender:username,message,roomId:room})
+    console.log(res.data.message)
+  }
+  const handleSubmit =async (e) => {
     e.preventDefault();
     setIsTyping(false);
 
@@ -82,6 +86,7 @@ function Home() {
     }
 
     socket.current.emit('typing', { username: '', room });
+    saveMessage()
     socket.current.emit('message', { message, username });
     setMessage('');
   };
@@ -90,13 +95,14 @@ function Home() {
     setShowOnlineUsers((prev) => !prev);
   };
 
+
   useEffect(() => {
     if (!formData) {
       navigate('/');
       return;
     }
 
-    socket.current = io('https://chatterboxx-rz5g.onrender.com/');
+    socket.current = io('http://localhost:2000');
     socket.current.on('connect', () => {
       setCurrUserId(socket.current.id);
       setCurrentUser({ username: formData.username, id: socket.current.id });

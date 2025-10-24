@@ -1,9 +1,12 @@
 import './join.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import { useState } from 'react';
+import Navbar from '../navbar/navbar';
 
 function Join() {
     const navigate = useNavigate();
+    const location=useLocation()
+    const name  = location.state?.username || "guest"
     const [formData, setFormData] = useState({ username: "", room: "" });
 
     const handleChange = (e) => {
@@ -15,9 +18,12 @@ function Join() {
         navigate("/chat", { state: { formData } });
         console.log("submit request", formData);
     };
+    
 
     return (
+        <div><Navbar name={name}/>
         <div className="join">
+            
             <div className="join-container">
                 <div className="join-header">
                     <h2>ChatterBox</h2>
@@ -48,6 +54,7 @@ function Join() {
                     <span className="status-text">Server Online</span>
                 </div>
             </div>
+        </div>
         </div>
     );
 }
