@@ -18,13 +18,19 @@ function ProtectedRoute({children}){
                     headers: { Authorization: `Bearer ${token}` }
                   });
                   setIsAuthenticated(true)
-            }catch(error){
-                localStorage.removeItem("token");
-                setIsAuthenticated(false)
-                alert(error.response.data.message,error)
-                console.log(error.response.data.message,error)
-                
-            }
+                }catch(error){
+                          localStorage.removeItem("token");
+                          setIsAuthenticated(false);
+                          console.error("Auth verification failed:", error); // Debugging
+                  
+                          // Check safely for the message
+                          if (error.response && error.response.data && error.response.data.message) {
+                            alert(error.response.data.message);
+                          } else {
+                            // Don't alert here unless you really need to
+                            console.log("Session expired or token is invalid.");
+                          }
+                        }
         }
         checkAuth()
     

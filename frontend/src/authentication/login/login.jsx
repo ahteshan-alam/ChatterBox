@@ -13,9 +13,9 @@ function LogIn() {
         e.preventDefault()
         try{
             const res=await axios.post("https://chatterbox-o3zv.onrender.com/logIn",{
-                username:e.target.username.value,
-                password:e.target.password.value
-            })
+                            username: userData.username,
+                            password: userData.password
+                       })
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", JSON.stringify(res.data.user))
             alert(res.data.message)
@@ -25,12 +25,16 @@ function LogIn() {
            
         }
         catch(err){
-            if(err.response)
-            alert(err.response.data.message,err)
-           
-            else
-            alert("something went wrong")
-        }
+                  console.error("Login failed:", err); // This helps you debug!
+                  
+                  // Check safely for the message
+                  if (err.response && err.response.data && err.response.data.message) {
+                    alert(err.response.data.message);
+                  } else {
+                    // Show a friendly error if we can't find the specific one
+                    alert("Invalid username or password.");
+                  }
+                }
        
 
     }
