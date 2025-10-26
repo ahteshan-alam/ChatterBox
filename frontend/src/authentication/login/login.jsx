@@ -25,13 +25,13 @@ function LogIn() {
            
         }
         catch(err){
-                  console.error("Login failed:", err); // This helps you debug!
+                  console.error("Login failed:", err);
                   
-                  // Check safely for the message
+                  
                   if (err.response && err.response.data && err.response.data.message) {
                     alert(err.response.data.message);
                   } else {
-                    // Show a friendly error if we can't find the specific one
+                    
                     alert("Invalid username or password.");
                   }
                 }

@@ -12,10 +12,10 @@ function SignUp() {
         e.preventDefault()
         try{
             const res=await axios.post("https://chatterbox-o3zv.onrender.com/signUp",{
-                username:e.target.username.value,
-                email:e.target.email.value,
-                password:e.target.password.value
-            })
+                            username: userData.username,
+                            email: userData.email,
+                            password: userData.password
+                       })
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", JSON.stringify(res.data.newUser))
             alert(res.data.message)
@@ -23,12 +23,16 @@ function SignUp() {
             
         }
         catch(err){
-            if(err.response)
-            alert(err.response.data.message,err)
-           
-            else
-            alert("something went wrong")
-        }
+                  console.error("Signup failed:", err); // Helps you debug
+                  
+                  // Check safely for the message
+                  if (err.response && err.response.data && err.response.data.message) {
+                    alert(err.response.data.message);
+                 } else {
+                    // Show a friendly error if we can't find the specific one
+                    alert("Signup failed. Please try again.");
+                  }
+                }
        
 
     }
@@ -65,7 +69,7 @@ function SignUp() {
                             required
                         />
                     </div>
-                    <p> <i> already have account ? </i> <Link to="/login">create</Link></p>
+                    <p> <i> already have account ? </i> <Link to="/login">login</Link></p>
                     <button type="submit">Enter</button>
                 </form>
                 <div className="join-status">
