@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const messageSchema=new mongoose.Schema({
-    sender:{
+    username:{
         type:String,
         required:true
     },
@@ -8,7 +8,15 @@ const messageSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    userId:{
+        type:String,
+        required:true
+    },
     message:{
+        type:String,
+        required:true
+    },
+    type:{
         type:String,
         required:true
     },

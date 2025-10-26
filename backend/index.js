@@ -45,6 +45,7 @@ io.on("connection", (socket) => {
     const members = rooms[formData.room]
 
     socket.broadcast.to(formData.room).emit('user-joined', {
+      
       message: `${socket.username} joined the chat`,
       type: "notification",
       id: uuidv4(),
@@ -66,8 +67,8 @@ io.on("connection", (socket) => {
       username,
       type: "message",
       id: uuidv4(),
-      time: new Date().toISOString(),
-      userId: socket.id
+      time: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}),
+      
     });
   });
   socket.on("typing", ({ username, room }) => {
@@ -131,7 +132,7 @@ io.on("connection", (socket) => {
   })
 
 
-  socket.on("disconnect", () => {
+  socket.on("disconnect",async() => {
     const room = rooms[socket.room];
     if (!room) return;
     const disconnectingUser = room.find(client => client.id === socket.id);
@@ -157,6 +158,7 @@ io.on("connection", (socket) => {
     userData.delete(socket.id);
     if (rooms[socket.room].length === 0) {
       delete rooms[socket.room]
+      await deleteMessages({roomId:socket.room})
     }
 
 
@@ -209,11 +211,33 @@ app.post("/logIn",async(req,res)=>{
   
 })
 app.post("/message",async(req,res)=>{
-  const {sender,message,roomId,time=new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}=req.body;
-  const newMessage=new Message({sender,message,roomId,time})
+  const {username,message,type,roomId,userId,time=new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}=req.body;
+  const newMessage=new Message({username,message,roomId,time,userId,type})
+  console.log(type,"this is type")
   await newMessage.save()
   return res.status(200).json({message:"message saved successfully"})
 })
+app.get("/getMessage",async(req,res)=>{
+  const { room } = req.query;
+  const messages = await Message.find({ roomId: room });
+  if (!messages || messages.length === 0) {
+    return res.status(400).json({warning:"no previous message found"})
+  }
+  
+  messages.forEach(msg=>console.log(msg.message))
+  return res.status(200).json({message:messages})
+
+})
+const deleteMessages=async({roomId})=>{
+ 
+   
+    
+   
+     await Message.deleteMany({roomId})
+  
+}
+  
+
 
 app.get("/verify",verifyToken,(req,res)=>{
   res.status(200).json({ message: "Token is valid", userId: req.user.id });

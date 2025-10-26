@@ -9,10 +9,11 @@
     background: var(--bg-primary);
     backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid var(--border-primary);
-    padding: 1rem 2rem;
-}
-
-.navbar::before {
+    padding: 0.75rem 1.5rem; /* Balanced vertical/horizontal padding */
+    margin: 0; /* Explicit no outer margins */
+  }
+  
+  .navbar::before {
     content: '';
     position: absolute;
     bottom: 0;
@@ -21,26 +22,31 @@
     height: 1px;
     background: var(--secondary-gradient);
     opacity: 0.3;
-}
-
-.navbar-container {
+  }
+  
+  .navbar-container {
     max-width: 1400px;
     margin: 0 auto;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    gap: 2rem;
-}
-
-/* Left side - Logo and App Name */
-.navbar-left {
+    justify-content: space-between; /* Key: Pushes left to start, right to end—no centering */
+    gap: 1rem; /* Minimal gap between left/right sections */
+    width: 100%; /* Full container width */
+    padding: 0; /* No extra internal padding—handled by navbar */
+    box-sizing: border-box; /* Include padding in width calc */
+  }
+  
+  /* Left side - Logo and App Name */
+  .navbar-left {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-right: 850px;
-}
-
-.app-logo {
+    gap: 0.75rem; /* Tight gap between logo and name */
+    flex-shrink: 0; /* Prevent compression */
+    margin: 0; /* Zero margins—no hardcoded offsets */
+    padding: 0; /* Zero padding */
+  }
+  
+  .app-logo {
     width: 40px;
     height: 40px;
     background: var(--primary-gradient);
@@ -53,14 +59,16 @@
     color: #000000;
     box-shadow: 0 4px 15px rgba(0, 255, 157, 0.3);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.app-logo:hover {
+    flex-shrink: 0; /* Fixed size */
+    margin: 0;
+  }
+  
+  .app-logo:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 20px rgba(0, 255, 157, 0.4);
-}
-
-.app-name {
+  }
+  
+  .app-name {
     font-size: 1.5rem;
     font-weight: 700;
     background: var(--secondary-gradient);
@@ -68,17 +76,22 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     letter-spacing: -0.5px;
-}
-
-/* Right side - Navigation Buttons */
-.navbar-right {
+    margin: 0; /* No default margins */
+    padding: 0;
+  }
+  
+  /* Right side - Navigation Buttons */
+  .navbar-right {
     display: flex;
     align-items: center;
-    gap: 1rem;
-}
-
-.nav-btn {
-    padding: 0.75rem 1.5rem;
+    gap: 0.75rem; /* Consistent button spacing */
+    flex-shrink: 0; /* Prevent compression */
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-btn {
+    padding: 0.6rem 1.25rem; /* Balanced internal padding */
     border: 1px solid var(--border-primary);
     border-radius: 10px;
     background: var(--bg-secondary);
@@ -93,39 +106,41 @@
     gap: 0.5rem;
     backdrop-filter: blur(10px);
     white-space: nowrap;
-}
-
-.nav-btn:hover {
+    margin: 0; /* Zero margins */
+    box-sizing: border-box;
+  }
+  
+  .nav-btn:hover {
     background: rgba(255, 255, 255, 0.05);
     border-color: var(--border-accent);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
-}
-
-.nav-btn:active {
+  }
+  
+  .nav-btn:active {
     transform: translateY(0);
-}
-
-.home-btn {
+  }
+  
+  .home-btn {
     border-color: rgba(0, 128, 255, 0.3);
-}
-
-.home-btn:hover {
+  }
+  
+  .home-btn:hover {
     border-color: var(--accent-blue);
     box-shadow: 0 4px 15px rgba(0, 128, 255, 0.2);
-}
-
-.user-btn {
+  }
+  
+  .user-btn {
     border-color: rgba(0, 255, 157, 0.3);
-    padding: 0.75rem 1.25rem;
-}
-
-.user-btn:hover {
+    padding: 0.6rem 1rem; /* Adjusted for icon */
+  }
+  
+  .user-btn:hover {
     border-color: var(--accent-green);
     box-shadow: 0 4px 15px rgba(0, 255, 157, 0.2);
-}
-
-.user-icon {
+  }
+  
+  .user-icon {
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -136,96 +151,218 @@
     font-weight: 600;
     font-size: 0.85rem;
     color: #000000;
-}
-
-.logout-btn {
+    flex-shrink: 0;
+    margin: 0;
+  }
+  
+  .logout-btn {
     background: linear-gradient(135deg, rgba(255, 0, 128, 0.1) 0%, rgba(255, 0, 128, 0.05) 100%);
     border-color: rgba(255, 0, 128, 0.3);
-}
-
-.logout-btn:hover {
+  }
+  
+  .logout-btn:hover {
     background: linear-gradient(135deg, rgba(255, 0, 128, 0.2) 0%, rgba(255, 0, 128, 0.1) 100%);
     border-color: var(--accent-pink);
     box-shadow: 0 4px 15px rgba(255, 0, 128, 0.2);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
+  }
+  
+  /* Hamburger Button (base, hidden on desktop) */
+  .hamburger-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 0.5rem 0.75rem; /* Touch-friendly */
+    display: none; /* Hidden by default */
+    transition: color 0.3s ease;
+    margin: 0;
+  }
+  
+  .hamburger-btn:hover {
+    color: var(--accent-green);
+  }
+  
+  /* Mobile Dropdown Menu */
+  .mobile-menu-container {
+    position: relative;
+    margin: 0;
+  }
+  
+  .mobile-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem); /* Gap below navbar */
+    right: 0; /* Flush right */
+    background: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: 10px;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    min-width: 200px;
+    animation: slideDown 0.3s ease-out;
+    z-index: 1001;
+    margin: 0;
+  }
+  
+  .mobile-dropdown button {
+    width: 100%;
+    justify-content: flex-start;
+    margin: 0;
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Tablet Styles (max-width: 1024px) */
+  @media (max-width: 1024px) {
     .navbar {
-        padding: 1rem 1.5rem;
+      padding: 0.625rem 1.25rem;
     }
-
+  
     .navbar-container {
-        gap: 1rem;
+      gap: 0.75rem;
     }
-
-    .app-name {
-        font-size: 1.25rem;
+  
+    .navbar-left {
+      gap: 0.5rem;
     }
-
-    .navbar-right {
-        gap: 0.75rem;
-    }
-
-    .nav-btn {
-        padding: 0.65rem 1.25rem;
-        font-size: 0.9rem;
-    }
-
-    .user-btn {
-        padding: 0.65rem 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar {
-        padding: 0.75rem 1rem;
-    }
-
-    .navbar-container {
-        gap: 0.75rem;
-    }
-
+  
     .app-logo {
-        width: 36px;
-        height: 36px;
-        font-size: 1.1rem;
+      width: 35px;
+      height: 35px;
+      font-size: 1.1rem;
     }
-
+  
     .app-name {
-        font-size: 1.1rem;
+      font-size: 1.3rem;
     }
-
+  
     .navbar-right {
-        gap: 0.5rem;
+      gap: 0.5rem;
     }
-
+  
     .nav-btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.85rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
     }
-
+  
     .user-btn {
-        padding: 0.6rem 0.85rem;
+      padding: 0.5rem 0.875rem;
     }
-
+  }
+  
+  /* Mobile & Small Tab Styles (max-width: 768px) */
+  @media (max-width: 768px) {
+    .navbar {
+      padding: 0.5rem 1rem;
+    }
+  
+    .navbar-container {
+      max-width: 100%;
+      justify-content: space-between; /* Maintain edge alignment */
+      gap: 0.5rem;
+    }
+  
+    .navbar-left {
+      gap: 0.5rem;
+      margin-right: auto; /* Ensures push to left */
+    }
+  
+    .app-name {
+      font-size: 1.2rem;
+      letter-spacing: -0.3px;
+    }
+  
+    .navbar-right {
+      gap: 0;
+    }
+  
+    .hamburger-btn {
+      display: block;
+    }
+  
+    .mobile-dropdown {
+      min-width: 180px;
+      right: 0; /* Flush to right edge */
+      top: calc(100% + 0.25rem);
+    }
+  
+    .mobile-dropdown .nav-btn {
+      padding: 0.5rem 0.875rem;
+      font-size: 0.875rem;
+    }
+  
+    .mobile-dropdown .user-btn {
+      padding: 0.5rem 0.875rem;
+    }
+  
     .user-icon {
-        width: 22px;
-        height: 22px;
-        font-size: 0.8rem;
+      width: 20px;
+      height: 20px;
+      font-size: 0.75rem;
     }
-
-    /* Hide text on very small screens, show only icons */
-    .home-btn span,
-    .logout-btn span {
-        display: none;
+  
+    .mobile-dropdown .user-btn span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100px;
     }
-
-    .home-btn::before {
-        content: '🏠';
+  }
+  
+  /* Small Mobile Styles (max-width: 480px) */
+  @media (max-width: 480px) {
+    .navbar {
+      padding: 0.5rem 0.75rem;
     }
-
-    .logout-btn::before {
-        content: '🚪';
+  
+    .navbar-left {
+      gap: 0.375rem;
     }
-}
+  
+    .app-logo {
+      width: 30px;
+      height: 30px;
+      font-size: 1rem;
+    }
+  
+    .app-name {
+      font-size: 1.1rem;
+    }
+  
+    .navbar-container {
+      gap: 0.25rem;
+    }
+  
+    .mobile-dropdown {
+        min-width: 180px;
+        right: 0; /* Flush to right edge */
+        top: calc(100% + 0.25rem);
+      }
+  
+    .mobile-dropdown .nav-btn {
+      padding: 0.45rem 0.75rem;
+      font-size: 0.8rem;
+    }
+  
+    .mobile-dropdown .user-btn span {
+      max-width: 70px;
+    }
+  
+    .hamburger-btn {
+      padding: 0.5rem 0.5rem;
+      font-size: 1.1rem;
+    }
+  }

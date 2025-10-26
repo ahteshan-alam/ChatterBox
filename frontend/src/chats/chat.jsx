@@ -73,10 +73,15 @@ function Home() {
       socket.current.emit('typing', { username: '', room });
     }, 1000);
   };
-  const saveMessage=async()=>{
-    const res=await axios.post("https://chatterbox-o3zv.onrender.com/message",{sender:username,message,roomId:room})
-    console.log(res.data.message)
+  const saveMessage=async({type,message})=>{
+    
+   await axios.post("https://chatterbox-o3zv.onrender.com/message",{username:user.username,message,roomId:room,userId:user._id,type})
+    .then(()=>{
+      setMessage('')
+    })
+    
   }
+  
   const handleSubmit =async (e) => {
     e.preventDefault();
     setIsTyping(false);
@@ -86,7 +91,7 @@ function Home() {
     }
 
     socket.current.emit('typing', { username: '', room });
-    saveMessage()
+    saveMessage({type:"message",message})
     socket.current.emit('message', { message, username });
     setMessage('');
   };
@@ -95,6 +100,24 @@ function Home() {
     setShowOnlineUsers((prev) => !prev);
   };
 
+  useEffect(()=>{
+    
+    const getMessage=async()=>{
+      
+      const res = await axios.get("https://chatterbox-o3zv.onrender.com/getMessage", {
+        params: { room },
+      });
+
+      if(res.data.message){
+        res.data.message.forEach(msg=>setMessages((prev)=>[...prev,msg]))
+      }
+      if(res.data.warning){
+        console.log(res.data.warning)
+      }
+    
+    }
+    getMessage()
+  },[])
 
   useEffect(() => {
     if (!formData) {
@@ -102,31 +125,42 @@ function Home() {
       return;
     }
 
-    socket.current = io('https://chatterbox-o3zv.onrender.com/');
+    socket.current = io('https://chatterbox-o3zv.onrender.com');
     socket.current.on('connect', () => {
-      setCurrUserId(socket.current.id);
+      setCurrUserId(user._id);
       setCurrentUser({ username: formData.username, id: socket.current.id });
       socket.current.emit('join-room', { id: socket.current.id, formData });
     });
 
     socket.current.on('user-joined', ({ message, members, id, type }) => {
+      setMessage(message)
+      saveMessage({type:"notification",message})
+      setMessage('')
       setOtherusers(members.filter((client) => client.id !== socket.current.id));
       setMessages((prev) => [...prev, { message, type, id }]);
     });
 
     socket.current.on('welcome', ({ message, members, id, type }) => {
+      setMessage(message)
+      saveMessage({type:"notification",message})
+      setMessage('')
       setOtherusers(members.filter((client) => client.id !== socket.current.id));
       setMessages((prev) => [...prev, { message, type, id }]);
       setIsLoading(false);
     });
 
-    socket.current.on('send-message', ({ message, username, type, id, time, userId }) => {
-      setMessages((prev) => [...prev, { message, username, type, id, time, userId }]);
+    socket.current.on('send-message', ({ message, username, type, id, time}) => {
+      setMessages((prev) => [...prev, { message, username, type, id, time, userId:user._id }]);
     });
 
     socket.current.on('user-left', ({ message, members, id, type }) => {
+      setMessage(message)
+      saveMessage({type:"notification",message})
+      setMessage('')
       setOtherusers(members.filter((client) => client.id !== socket.current.id));
       setMessages((prev) => [...prev, { message, type, id }]);
+     
+      
     });
 
     socket.current.on('user-typing', ({ message }) => {

@@ -8,11 +8,11 @@ function Home() {
     const location=useLocation()
     const user= location.state?.user || JSON.parse(localStorage.getItem("user"));
     const handleCreateRoom = () => {
-        navigate('/join',{state:{username:user.username}});
+        navigate('/create');
       };
     
       const handleJoinRoom = () => {
-        navigate('/join',{state:{username:user.username}});
+        navigate('/join');
       };
       
     return ( 

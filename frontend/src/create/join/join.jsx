@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Navbar from '../navbar/navbar';
 
 
-function Join() {
+function Create() {
     const navigate = useNavigate();
     const location=useLocation()
     const user= location.state?.user || JSON.parse(localStorage.getItem("user"));
@@ -13,7 +13,7 @@ function Join() {
 
 
    const handleChange=(e)=>{
-    setFormData({room:e.target.value,username:user.username})
+    setFormData({room:e.target.value})
    }
 
     const handleSubmit = (e) => {
@@ -38,7 +38,7 @@ function Join() {
                         <input
                         type="text"
                         id="username"
-                        value={user.username}
+                        value={formData.username}
                         readOnly
                          />
 
@@ -66,4 +66,4 @@ function Join() {
     );
 }
 
-export default Join;
+export default Create;

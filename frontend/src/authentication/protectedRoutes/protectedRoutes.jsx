@@ -14,7 +14,7 @@ function ProtectedRoute({children}){
                 return;
             }
             try{
-               await axios.get("http://localhost:2000/verify", {
+               await axios.get("https://chatterbox-o3zv.onrender.com/verify", {
                     headers: { Authorization: `Bearer ${token}` }
                   });
                   setIsAuthenticated(true)
