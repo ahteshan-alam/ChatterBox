@@ -65,7 +65,7 @@ function SignUp() {
                             required
                         />
                     </div>
-                    <p> <i> already have account ? </i> <a href="https://chatterbox-o3zv.onrender.com/login">login</a></p>
+                    <p> <i> already have account ? </i> <Link to="/login">create</Link></p>
                     <button type="submit">Enter</button>
                 </form>
                 <div className="join-status">

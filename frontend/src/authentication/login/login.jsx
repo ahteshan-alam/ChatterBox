@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import "./login.css"
 function LogIn() {
@@ -60,7 +60,7 @@ function LogIn() {
                             required
                         />
                     </div>
-                    <p> <i>don't have account ? </i> <a href="https://chatterbox-o3zv.onrender.com/signUp">create</a></p>
+                    <p> <i>don't have account ? </i> <Link to="/signUp">create</Link></p>
                     <button type="submit">LogIn</button>
                 </form>
                 <div className="join-status">
