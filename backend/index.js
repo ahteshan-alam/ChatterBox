@@ -172,44 +172,59 @@ io.on("connection", (socket) => {
 
 
 })
-app.post("/signUp",async(req,res)=>{
-  const {username,email,password}=req.body
-  const existingUser1=await User.findOne({username})
-  if(existingUser1){
-    return res.status(400).json({message:"username already exist"})
-  }
-  const existingUser2=await User.findOne({email})
-  if(existingUser2){
-    return res.status(400).json({message:"email already exist"})
-  }
+app.post("/signUp", async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
 
-  const hashedPassword=await bcrypt.hash(password,10)
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: "Please provide all fields." });
+    }
 
-  const newUser=new User({username,email,password:hashedPassword})
-  await newUser.save()
-  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET , { expiresIn: "7d" });
-  res.status(201).json({message:"user registered successfully",token,newUser})
-  
-})
-app.post("/logIn",async(req,res)=>{
-  const {username,password}=req.body
-  const user=await User.findOne({username})
-  if(!user){
-    return res.status(400).json({message:"user not found"})
-  }
-  const isMatched=await bcrypt.compare(password,user.password)
-  if(!isMatched){
-   return res.status(400).json({message:"invalid password"})
-  }
-  console.log(user)
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET , { expiresIn: "7d" });
-  res.status(201).json({message:`logging in as ${user.username}`,token,user})
-  
-  
+    const existingUser1 = await User.findOne({ username });
+    if (existingUser1) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+    const existingUser2 = await User.findOne({ email });
+    if (existingUser2) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
 
- 
-  
-})
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({ username, email, password: hashedPassword });
+    await newUser.save();
+
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    
+    res.status(201).json({ message: "User registered successfully", token, newUser });
+
+  } catch (error) {
+    // This is the safety net!
+    console.error("SIGNUP ERROR:", error); // This shows you the real error in your Render logs
+    return res.status(500).json({ message: "Server error during signup." });
+  }
+});
+app.post("/logIn", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    const isMatched = await bcrypt.compare(password, user.password);
+    if (!isMatched) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    res.status(201).json({ message: `Logging in as ${user.username}`, token, user });
+
+  } catch (error) {
+    // The safety net!
+    console.error("LOGIN ERROR:", error);
+    return res.status(500).json({ message: "Server error during login." });
+  }
+});
 app.post("/message",async(req,res)=>{
   const {username,message,type,roomId,userId,time=new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}=req.body;
   const newMessage=new Message({username,message,roomId,time,userId,type})
