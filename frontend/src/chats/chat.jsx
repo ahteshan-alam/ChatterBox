@@ -149,7 +149,7 @@ function Home() {
       setIsLoading(false);
     });
 
-    socket.current.on('send-message', ({ message, username, type, id, time}) => {
+    socket.current.on('send-message', ({ message, username, type, id, time,userId}) => {
       setMessages((prev) => [...prev, { message, username, type, id, time, userId }]);
     });
 
