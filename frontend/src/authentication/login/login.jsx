@@ -5,12 +5,13 @@ import "./login.css"
 function LogIn() {
     const navigate = useNavigate();
     const [userData,setUserData] = useState({ username: "", password: "" });
-   
+   const [isLoading,setIsLoading]=useState(false)
     const handleChange = (e)=>{
         setUserData({...userData,[e.target.id]:e.target.value})
     }
     const handleSubmit=async(e)=>{
         e.preventDefault()
+        setIsLoading(true)
         try{
             const res=await axios.post("https://chatterbox-o3zv.onrender.com/logIn",{
                             username: userData.username,
@@ -35,8 +36,25 @@ function LogIn() {
                     alert("Invalid username or password.");
                   }
                 }
+        finally{
+            setIsLoading(false)
+        }
        
 
+    }
+    if(isLoading){
+        return (
+            <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <div className="loader"></div>
+          </div>
+        )
     }
     return ( 
         <div className="join">

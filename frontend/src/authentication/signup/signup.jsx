@@ -5,11 +5,13 @@ import './signup.css'
 function SignUp() {
     const navigate = useNavigate();
     const [userData,setUserData] = useState({ username: "", email: "", password: "" });
+    const [isLoading, setIsLoading] = useState(false);
     const handleChange = (e)=>{
         setUserData({...userData,[e.target.id]:e.target.value})
     }
     const handleSubmit=async(e)=>{
         e.preventDefault()
+        setIsLoading(true)
         try{
             const res=await axios.post("https://chatterbox-o3zv.onrender.com/signUp",{
                             username: userData.username,
@@ -23,18 +25,35 @@ function SignUp() {
             
         }
         catch(err){
-                  console.error("Signup failed:", err); // Helps you debug
+                  console.error("Signup failed:", err); 
                   
-                  // Check safely for the message
+                 
                   if (err.response && err.response.data && err.response.data.message) {
                     alert(err.response.data.message);
                  } else {
-                    // Show a friendly error if we can't find the specific one
+                    
                     alert("Signup failed. Please try again.");
                   }
                 }
+        finally{
+            setIsLoading(false)
+        }
        
 
+    }
+    if(isLoading){
+        return (
+            <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <div className="loader"></div>
+          </div>
+        )
     }
     return ( 
         <div className="join">

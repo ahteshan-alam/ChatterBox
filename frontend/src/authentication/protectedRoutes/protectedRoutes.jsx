@@ -21,13 +21,13 @@ function ProtectedRoute({children}){
                 }catch(error){
                           localStorage.removeItem("token");
                           setIsAuthenticated(false);
-                          console.error("Auth verification failed:", error); // Debugging
+                          console.error("Auth verification failed:", error); 
                   
-                          // Check safely for the message
+                         
                           if (error.response && error.response.data && error.response.data.message) {
                             alert(error.response.data.message);
                           } else {
-                            // Don't alert here unless you really need to
+                           
                             console.log("Session expired or token is invalid.");
                           }
                         }
