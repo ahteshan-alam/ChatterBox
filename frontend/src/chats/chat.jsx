@@ -92,7 +92,7 @@ function Home() {
 
     socket.current.emit('typing', { username: '', room });
     saveMessage({type:"message",message})
-    socket.current.emit('message', { message, username });
+    socket.current.emit('message', { message, username,userId:user._id });
     setMessage('');
   };
 
@@ -150,7 +150,7 @@ function Home() {
     });
 
     socket.current.on('send-message', ({ message, username, type, id, time}) => {
-      setMessages((prev) => [...prev, { message, username, type, id, time, userId:user._id }]);
+      setMessages((prev) => [...prev, { message, username, type, id, time, userId }]);
     });
 
     socket.current.on('user-left', ({ message, members, id, type }) => {

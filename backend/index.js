@@ -59,13 +59,14 @@ io.on("connection", (socket) => {
 
 
   })
-  socket.on("message", ({ message, username }) => {
+  socket.on("message", ({ message, username,userId }) => {
     const user = userData.get(socket.id);
     if (!user || !user.room) return;
     io.to(user.room).emit("send-message", {
       message,
       username,
       type: "message",
+      userId,
       id: uuidv4(),
       time: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}),
       
