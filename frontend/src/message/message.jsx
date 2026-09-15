@@ -2,7 +2,7 @@ import './message.css';
 
 function Message({ data, currUserId }) {
     const isOwn = data.userId === currUserId;
-    console.log(data.username)
+    
    
 
     return (
