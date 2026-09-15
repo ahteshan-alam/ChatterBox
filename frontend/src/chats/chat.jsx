@@ -15,8 +15,8 @@ const configuration = {
         'turn:global.xirsys.net:3478?transport=tcp',
         'turns:global.xirsys.net:5349?transport=tcp',
       ],
-      username: 'ahteshan',
-      credential: '061c8212-7c6c-11f0-9de2-0242ac140002',
+      username: import.meta.env.VITE_XIRSYS_USERNAME,
+      credential: import.meta.env.VITE_XIRSYS_CREDENTIAL,
     },
   ],
 };
@@ -75,7 +75,7 @@ function Home() {
   };
   const saveMessage=async({type,message})=>{
     
-   await axios.post("https://chatterbox-o3zv.onrender.com/message",{username:user.username,message,roomId:room,userId:user._id,type})
+   await axios.post(`${import.meta.env.VITE_BACKEND_URL}/message`,{username:user.username,message,roomId:room,userId:user._id,type})
     .then(()=>{
       setMessage('')
     })
@@ -92,7 +92,12 @@ function Home() {
 
     socket.current.emit('typing', { username: '', room });
     saveMessage({type:"message",message})
-    socket.current.emit('message', { message, username,userId:user._id });
+    socket.current.emit('message', { 
+      message, 
+      username,
+      userId: user._id,
+      sentAt: performance.now()
+    });
     setMessage('');
   };
 
@@ -104,7 +109,7 @@ function Home() {
     
     const getMessage=async()=>{
       
-      const res = await axios.get("https://chatterbox-o3zv.onrender.com/getMessage", {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getMessage`, {
         params: { room },
       });
 
@@ -125,7 +130,7 @@ function Home() {
       return;
     }
 
-    socket.current = io('https://chatterbox-o3zv.onrender.com');
+    socket.current = io(import.meta.env.VITE_BACKEND_URL);
     socket.current.on('connect', () => {
       setCurrUserId(user._id);
       setCurrentUser({ username: formData.username, id: socket.current.id });
@@ -149,7 +154,10 @@ function Home() {
       setIsLoading(false);
     });
 
-    socket.current.on('send-message', ({ message, username, type, id, time,userId}) => {
+    socket.current.on('send-message', ({ message, username, type, id, time,userId,sentAt}) => {
+      const latency = performance.now() - sentAt;
+      console.log("Message delivery latency:", latency.toFixed(2), "ms");
+    
       setMessages((prev) => [...prev, { message, username, type, id, time, userId }]);
     });
 

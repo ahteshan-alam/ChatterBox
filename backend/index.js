@@ -14,14 +14,14 @@ dotenv.config();
 
 
 const app = express()
-const url = 'mongodb+srv://ahteshan_04:ahteshan0904@cluster0.poux9.mongodb.net/chatterbox?retryWrites=true&w=majority&appName=Cluster0'
+const url = process.env.MONGO_URL
 app.use(express.json());
 app.use(cors())
 const server = createServer(app)
 
 const io = new Server(server, {
   cors: {
-    origin: "https://chatterbocs.netlify.app",
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST"]
   }
 })
@@ -59,18 +59,18 @@ io.on("connection", (socket) => {
 
 
   })
-  socket.on("message", ({ message, username,userId }) => {
-    const user = userData.get(socket.id);
-    if (!user || !user.room) return;
-    io.to(user.room).emit("send-message", {
-      message,
-      username,
-      type: "message",
-      userId,
-      id: uuidv4(),
+  socket.on("message", ({ message, username,userId,sentAt }) => {
+    const user = userData.get(socket.id); 
+    if (!user || !user.room) return; 
+    io.to(user.room).emit("send-message", { 
+      message, 
+      username, 
+      type: "message", 
+      userId, 
+      id: uuidv4(), 
       time: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}),
-      
-    });
+      sentAt
+    }); 
   });
   socket.on("typing", ({ username, room }) => {
     if (username === "") {
