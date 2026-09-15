@@ -59,18 +59,30 @@ io.on("connection", (socket) => {
 
 
   })
-  socket.on("message", ({ message, username,userId,sentAt }) => {
+  socket.on("message", ({ message, username, userId }) => {
+
     const user = userData.get(socket.id); 
+  
     if (!user || !user.room) return; 
+  
+    const serverSentAt = Date.now();
+  
     io.to(user.room).emit("send-message", { 
+  
       message, 
       username, 
       type: "message", 
       userId, 
       id: uuidv4(), 
-      time: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}),
-      sentAt
+      time: new Date().toLocaleTimeString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+      serverSentAt
+  
     }); 
+  
   });
   socket.on("typing", ({ username, room }) => {
     if (username === "") {
