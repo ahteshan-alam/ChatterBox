@@ -155,9 +155,12 @@ function Home() {
       setIsLoading(false);
     });
 
-    socket.current.on('send-message', ({ message, username, type, id, time,userId,sentAt}) => {
+    socket.current.on('send-message', ({ message, username, type, id, time, userId, sentAt }) => {
+      console.log("sentAt received:", sentAt);
+      console.log("sentAt type:", typeof sentAt);
+    
       const latency = performance.now() - sentAt;
-      console.log("Message delivery latency:", latency.toFixed(2), "ms");
+      console.log("Message delivery latency:", latency, "ms");
     
       setMessages((prev) => [...prev, { message, username, type, id, time, userId }]);
     });
