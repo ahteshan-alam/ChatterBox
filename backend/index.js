@@ -87,9 +87,9 @@ io.on("connection", (socket) => {
   });
   socket.on("typing", ({ username, room }) => {
     if (username === "") {
-      socket.to(room).emit("user-typing", { message: "" });
+      socket.to(room).volatile.emit("user-typing", { message: "" });
     } else {
-      socket.to(room).emit("user-typing", { message: `${username} is typing ...` });
+      socket.to(room).volatile.emit("user-typing", { message: `${username} is typing ...` });
     }
   });
   socket.on('offer', (payload) => {
