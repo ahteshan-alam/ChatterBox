@@ -59,30 +59,28 @@ io.on("connection", (socket) => {
 
 
   })
-  socket.on("message", ({ message, username, userId }) => {
+  socket.on("message", ({ message, username, userId }, callback) => {
 
-    const user = userData.get(socket.id); 
+    const user = userData.get(socket.id);
   
-    if (!user || !user.room) return; 
+    if (!user || !user.room) return;
   
-    const serverSentAt = Date.now();
-    
-  
-    io.to(user.room).emit("send-message", { 
-  
-      message, 
-      username, 
-      type: "message", 
-      userId, 
-      id: uuidv4(), 
+    io.to(user.room).emit("send-message", {
+      message,
+      username,
+      type: "message",
+      userId,
+      id: uuidv4(),
       time: new Date().toLocaleTimeString('en-IN', {
         timeZone: 'Asia/Kolkata',
         hour: '2-digit',
         minute: '2-digit'
-      }),
-      serverSentAt
+      })
+    });
   
-    }); 
+    if (callback) {
+      callback();
+    }
   
   });
   socket.on("typing", ({ username, room }) => {

@@ -93,12 +93,24 @@ function Home() {
 
     socket.current.emit('typing', { username: '', room });
     saveMessage({type:"message",message})
-    socket.current.emit('message', { 
-      message, 
-      username,
-      userId: user._id,
-      
-    });
+    const startTime = performance.now();
+
+socket.current.emit(
+  'message',
+  {
+    message,
+    username,
+    userId: user._id
+  },
+  () => {
+    const latency = performance.now() - startTime;
+    console.log(
+      "Message round-trip latency:",
+      latency.toFixed(2),
+      "ms"
+    );
+  }
+);
     setMessage('');
   };
 
