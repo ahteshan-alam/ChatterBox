@@ -5,6 +5,7 @@ import { io } from 'socket.io-client';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import Message from '../message/message';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_BACKEND_URL.replace(/\/+$/, '');
 const configuration = {
   iceServers: [
     {
@@ -75,7 +76,7 @@ function Home() {
   };
   const saveMessage=async({type,message})=>{
     
-   await axios.post(`${import.meta.env.VITE_BACKEND_URL}/message`,{username:user.username,message,roomId:room,userId:user._id,type})
+   await axios.post(`${API_URL}/message`,{username:user.username,message,roomId:room,userId:user._id,type})
     .then(()=>{
       setMessage('')
     })
@@ -109,7 +110,7 @@ function Home() {
     
     const getMessage=async()=>{
       
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getMessage`, {
+      const res = await axios.get(`${API_URL}/getMessage`, {
         params: { room },
       });
 
@@ -130,7 +131,7 @@ function Home() {
       return;
     }
 
-    socket.current = io(import.meta.env.VITE_BACKEND_URL);
+    socket.current = io(API_URL);
     socket.current.on('connect', () => {
       setCurrUserId(user._id);
       setCurrentUser({ username: formData.username, id: socket.current.id });
