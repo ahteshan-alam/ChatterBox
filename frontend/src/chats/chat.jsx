@@ -171,9 +171,7 @@ socket.current.emit(
 
     socket.current.on('send-message', ({ message, username, type, id, time, userId, serverSentAt }) => {
 
-      const latency = Date.now() - serverSentAt;
-    
-      console.log("Message delivery latency:", latency, "ms");
+      
     
       setMessages((prev) => [...prev, { message, username, type, id, time, userId }]);
     
