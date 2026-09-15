@@ -66,6 +66,7 @@ io.on("connection", (socket) => {
     if (!user || !user.room) return; 
   
     const serverSentAt = Date.now();
+    console.log("SERVER TIMESTAMP:", serverSentAt);
   
     io.to(user.room).emit("send-message", { 
   
