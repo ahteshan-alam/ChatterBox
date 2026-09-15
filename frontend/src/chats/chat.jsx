@@ -176,15 +176,17 @@ function Home() {
 
     socket.current.on(
       'send-message',
-      ({ message, username, type, id, time, userId, serverSentAt }) => {
+      ({ message, username, type, id, time, userId, senderSocketId, serverSentAt }) => {
     
-        const deliveryLatency = Date.now() - serverSentAt;
+        if (socket.current.id !== senderSocketId && serverSentAt) {
+          const deliveryLatency = Date.now() - serverSentAt;
     
-        console.log(
-          "Server → Receiver message latency:",
-          deliveryLatency,
-          "ms"
-        );
+          console.log(
+            "Server → Receiver message latency:",
+            deliveryLatency.toFixed(2),
+            "ms"
+          );
+        }
     
         setMessages((prev) => [
           ...prev,
