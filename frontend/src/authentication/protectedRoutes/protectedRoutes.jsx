@@ -14,7 +14,7 @@ function ProtectedRoute({children}){
                 return;
             }
             try{
-               await axios.get("https://chatterbox-o3zv.onrender.com/verify", {
+               await axios.get(`${import.meta.env.VITE_BACKEND_URL}/verify`, {
                     headers: { Authorization: `Bearer ${token}` }
                   });
                   setIsAuthenticated(true)

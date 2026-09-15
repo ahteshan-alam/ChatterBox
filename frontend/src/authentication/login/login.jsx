@@ -13,7 +13,7 @@ function LogIn() {
         e.preventDefault()
         setIsLoading(true)
         try{
-            const res=await axios.post("https://chatterbox-o3zv.onrender.com/logIn",{
+            const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/logIn`,{
                             username: userData.username,
                             password: userData.password
                        })

@@ -13,7 +13,7 @@ function SignUp() {
         e.preventDefault()
         setIsLoading(true)
         try{
-            const res=await axios.post("https://chatterbox-o3zv.onrender.com/signUp",{
+            const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/signUp`,{
                             username: userData.username,
                             email: userData.email,
                             password: userData.password
