@@ -71,6 +71,9 @@ io.on("connection", (socket) => {
       type: "message",
       userId,
       id: uuidv4(),
+    
+      serverSentAt: Date.now(),
+    
       time: new Date().toLocaleTimeString('en-IN', {
         timeZone: 'Asia/Kolkata',
         hour: '2-digit',
