@@ -131,7 +131,9 @@ function Home() {
       return;
     }
 
-    socket.current = io(API_URL);
+    socket.current = io(API_URL, {
+      transports: ['websocket']
+    });
     socket.current.on('connect', () => {
       setCurrUserId(user._id);
       setCurrentUser({ username: formData.username, id: socket.current.id });
