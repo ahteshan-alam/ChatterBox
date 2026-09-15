@@ -91,28 +91,24 @@ function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsTyping(false);
-
+  
     if (typingTimeout.current) {
       clearTimeout(typingTimeout.current);
     }
-
+  
     socket.current.emit("typing", { username: "", room });
+  
     saveMessage({ type: "message", message });
-    const startTime = performance.now();
-
-    socket.current.emit(
-      "message",
-      {
-        message,
-        username,
-        userId: user._id,
-      },
-      () => {
-        const latency = performance.now() - startTime;
-
-        console.log("Round-trip latency:", latency.toFixed(2), "ms");
-      }
-    );
+  
+    const sentAt = performance.now();
+  
+    socket.current.emit("message", {
+      message,
+      username,
+      userId: user._id,
+      sentAt
+    });
+  
     setMessage("");
   };
 
@@ -175,8 +171,16 @@ function Home() {
     });
 
     socket.current.on(
-      'send-message',
-      ({ message, username, type, id, time, userId }) => {
+      "send-message",
+      ({ message, username, type, id, time, userId, sentAt }) => {
+    
+        const latency = performance.now() - sentAt;
+    
+        console.log(
+          "Message delivery latency:",
+          latency.toFixed(2),
+          "ms"
+        );
     
         setMessages((prev) => [
           ...prev,

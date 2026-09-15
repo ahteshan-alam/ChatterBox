@@ -59,8 +59,7 @@ io.on("connection", (socket) => {
 
 
   })
-  socket.on("message", ({ message, username, userId }, callback) => {
-
+  socket.on("message", ({ message, username, userId, sentAt }) => {
     const user = userData.get(socket.id);
   
     if (!user || !user.room) return;
@@ -71,6 +70,7 @@ io.on("connection", (socket) => {
       type: "message",
       userId,
       id: uuidv4(),
+      sentAt,
       time: new Date().toLocaleTimeString('en-IN', {
         timeZone: 'Asia/Kolkata',
         hour: '2-digit',
